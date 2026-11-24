@@ -2,25 +2,161 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #11241c;
+  --surface-muted: #f6faf7;
+  --border-subtle: #e3ece6;
+  --brand-emerald: #059669;
+  --brand-amber: #facc15;
+  --brand-sky: #0284c7;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-jakarta), "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-outfit), "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), "Fraunces", ui-serif, Georgia, serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-editorial {
+  font-family: var(--font-serif);
+}
+
+/* Warm botanical sunlight & river-mist canvas without sterile graph lines */
+.bg-amazon-hero,
+.bg-clean-grid {
+  background-color: #fbfdfb;
+  background-image:
+    radial-gradient(ellipse 56% 48% at 6% 8%, rgba(254, 240, 138, 0.36) 0%, transparent 70%),
+    radial-gradient(ellipse 58% 52% at 94% 14%, rgba(167, 243, 208, 0.36) 0%, transparent 72%),
+    radial-gradient(ellipse 46% 42% at 62% 96%, rgba(186, 230, 253, 0.24) 0%, transparent 70%);
+}
+
+.bg-amazon-mist,
+.bg-soft-tint {
+  background-color: #f3faf5;
+  background-image:
+    radial-gradient(circle at 8% 16%, rgba(167, 243, 208, 0.42) 0%, transparent 48%),
+    radial-gradient(circle at 92% 82%, rgba(254, 240, 138, 0.32) 0%, transparent 46%),
+    radial-gradient(circle at 52% 48%, rgba(186, 230, 253, 0.18) 0%, transparent 56%);
+}
+
+.bg-amazon-canopy-soft {
+  background-color: #f4faf6;
+  background-image:
+    radial-gradient(ellipse 68% 52% at 12% 10%, rgba(167, 243, 208, 0.36) 0%, transparent 68%),
+    radial-gradient(ellipse 62% 50% at 88% 88%, rgba(253, 230, 138, 0.28) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 45% at 85% 15%, rgba(186, 230, 253, 0.22) 0%, transparent 65%);
+}
+
+.bg-amazon-river-soft {
+  background-color: #eef7f3;
+  background-image:
+    radial-gradient(ellipse 64% 52% at 84% 16%, rgba(153, 246, 228, 0.34) 0%, transparent 68%),
+    radial-gradient(ellipse 60% 48% at 14% 84%, rgba(186, 230, 253, 0.32) 0%, transparent 68%),
+    radial-gradient(ellipse 46% 42% at 50% 50%, rgba(209, 250, 229, 0.24) 0%, transparent 68%);
+}
+
+@keyframes floatGentle {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-float-gentle {
+  animation: floatGentle 5.5s ease-in-out infinite;
+}
+
+@keyframes kenBurnsPan {
+  0% {
+    transform: scale(1.06) translate3d(-1.5%, -1%, 0);
+  }
+  50% {
+    transform: scale(1.14) translate3d(1.5%, 1%, 0);
+  }
+  100% {
+    transform: scale(1.06) translate3d(-1.5%, -1%, 0);
+  }
+}
+
+.animate-ken-burns {
+  animation: kenBurnsPan 26s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes leafSway {
+  0%,
+  100% {
+    transform: rotate(-2.5deg) translateY(0px);
+  }
+  50% {
+    transform: rotate(3deg) translateY(-4px);
+  }
+}
+
+.animate-leaf-sway {
+  animation: leafSway 7s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+@keyframes driftMote {
+  0% {
+    transform: translate3d(0, 14px, 0) scale(0.85);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.75;
+  }
+  75% {
+    opacity: 0.65;
+  }
+  100% {
+    transform: translate3d(18px, -42px, 0) scale(1.15);
+    opacity: 0;
+  }
+}
+
+.animate-drift-mote {
+  animation: driftMote 9s ease-in-out infinite;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f3;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b7cec1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #059669;
 }

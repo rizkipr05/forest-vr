@@ -1,0 +1,180 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String            @id @default(cuid())
+  explorerTag      String            @unique
+  username         String?           @unique
+  passwordHash     String?
+  displayName      String            @default("Penjelajah Muda")
+  avatarSlug       String            @default("jaguar")
+  isRegistered     Boolean           @default(false)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  quizAttempts     QuizAttempt[]
+  learningProgress LearningProgress[]
+  achievements     UserAchievement[]
+
+  @@map("users")
+}
+
+model Animal {
+  id                 String   @id
+  slug               String   @unique
+  name               String
+  englishName        String
+  scientificName     String
+  category           String
+  shortDescription   String
+  description        String
+  habitat            String
+  dietOrRole         String
+  conservationStatus String
+  funFacts           String[]
+  narrationText      String
+  imageUrl           String
+  modelUrl           String
+  audioUrl           String
+  accentColor        String
+  zone               String
+  posX               Float
+  posY               Float
+  posZ               Float
+  rotationY          Float
+  scale              Float
+  perchType          String?
+  animationStyle     String
+  createdAt          DateTime @default(now())
+
+  @@map("animals")
+}
+
+model Plant {
+  id                 String   @id
+  slug               String   @unique
+  name               String
+  englishName        String
+  scientificName     String
+  category           String
+  shortDescription   String
+  description        String
+  habitat            String
+  dietOrRole         String
+  conservationStatus String
+  funFacts           String[]
+  narrationText      String
+  imageUrl           String
+  modelUrl           String
+  audioUrl           String
+  accentColor        String
+  zone               String
+  posX               Float
+  posY               Float
+  posZ               Float
+  rotationY          Float
+  scale              Float
+  perchType          String?
+  animationStyle     String
+  createdAt          DateTime @default(now())
+
+  @@map("plants")
+}
+
+model Quiz {
+  id          String         @id
+  slug        String         @unique
+  title       String
+  description String
+  createdAt   DateTime       @default(now())
+  questions   QuizQuestion[]
+  attempts    QuizAttempt[]
+
+  @@map("quizzes")
+}
+
+model QuizQuestion {
+  id                 String       @id
+  quizId             String
+  type               String
+  prompt             String
+  hint               String
+  imageUrl           String?
+  relatedSpeciesSlug String?
+  explanation        String
+  orderIndex         Int
+  quiz               Quiz         @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  options            QuizOption[]
+
+  @@map("quiz_questions")
+}
+
+model QuizOption {
+  id         String       @id
+  questionId String
+  label      String
+  isCorrect  Boolean
+  orderIndex Int
+  question   QuizQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@map("quiz_options")
+}
+
+model QuizAttempt {
+  id             String   @id @default(cuid())
+  userId         String
+  quizId         String
+  score          Int
+  totalQuestions Int
+  percentage     Float
+  createdAt      DateTime @default(now())
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quiz           Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+
+  @@map("quiz_attempts")
+}
+
+model LearningProgress {
+  id            String   @id @default(cuid())
+  userId        String
+  speciesSlug   String
+  speciesKind   String
+  discovered    Boolean  @default(true)
+  timesVisited  Int      @default(1)
+  lastVisitedAt DateTime @default(now())
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, speciesSlug])
+  @@map("learning_progress")
+}
+
+model Achievement {
+  id               String            @id
+  code             String            @unique
+  title            String
+  description      String
+  iconName         String
+  badgeColor       String
+  requirementType  String
+  requirementValue Int
+  unlocks          UserAchievement[]
+
+  @@map("achievements")
+}
+
+model UserAchievement {
+  id            String      @id @default(cuid())
+  userId        String
+  achievementId String
+  unlockedAt    DateTime    @default(now())
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, achievementId])
+  @@map("user_achievements")
+}
